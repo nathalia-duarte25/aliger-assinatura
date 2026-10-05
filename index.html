@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Assinatura de e-mail · Aliger</title>
+<style>
+  body { margin: 0; padding: 32px 16px; background: #f5f5f5; color: #333; font: 15px/1.5 Arial, sans-serif; }
+  main { max-width: 860px; margin: 0 auto; }
+  h1 { font-size: 20px; color: #002366; margin: 0 0 4px; }
+  p.lead { margin: 0 0 24px; color: #555; }
+  form { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 16px; background: #fff; padding: 20px; border-radius: 8px; border: 1px solid #d9d9d9; }
+  label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: #555; }
+  input { font: inherit; padding: 8px 10px; border: 1px solid #ccc; border-radius: 6px; }
+  .preview { margin: 24px 0 12px; background: #fff; padding: 8px; border-radius: 8px; border: 1px solid #d9d9d9; overflow-x: auto; }
+  button { font: inherit; font-weight: bold; color: #fff; background: #0033cc; border: 0; border-radius: 6px; padding: 10px 18px; cursor: pointer; }
+  #status { margin-left: 12px; color: #1a7f37; }
+  ol { background: #fff; padding: 16px 16px 16px 36px; border-radius: 8px; border: 1px solid #d9d9d9; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Assinatura de e-mail da Aliger</h1>
+  <p class="lead">Preencha seus dados, clique em <b>Copiar assinatura</b> e cole no Gmail.</p>
+
+  <form id="dados" autocomplete="off">
+    <label>Nome <input name="nome" value="Nome Sobrenome"></label>
+    <label>Cargo <input name="cargo" value="Cargo"></label>
+    <label>E-mail <input name="email" value="email@aliger.io"></label>
+    <label>Telefone 1 <input name="tel1" value="(12)3500-3600"></label>
+    <label>Telefone 2 (opcional) <input name="tel2" value="(11)4814-2600"></label>
+  </form>
+
+  <div class="preview" id="assinatura"></div>
+  <button type="button" id="copiar">Copiar assinatura</button><span id="status"></span>
+
+  <h1 style="margin-top:32px">Como instalar no Gmail</h1>
+  <ol>
+    <li>Clique em <b>Copiar assinatura</b> acima.</li>
+    <li>No Gmail: engrenagem → <b>Ver todas as configurações</b> → aba <b>Geral</b> → <b>Assinatura</b>.</li>
+    <li>Apague a assinatura antiga inteira e cole (Cmd+V / Ctrl+V) no lugar.</li>
+    <li>Em <b>Padrões de assinatura</b>, escolha essa assinatura para novos e-mails e respostas.</li>
+    <li>Role até o fim da página e clique em <b>Salvar alterações</b>.</li>
+  </ol>
+</main>
+
+<script>
+const IMG = 'https://nathalia-duarte25.github.io/aliger-assinatura/img/';
+
+function esc(s) {
+  return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+}
+
+function linhaContato(icone, alt, conteudo) {
+  return `<tr><td style="padding:0 8px 6px 0;vertical-align:middle"><img src="${IMG}${icone}" alt="${alt}" width="16" height="16" style="display:block;border:0"></td>`
+       + `<td style="padding:0 0 6px 0;vertical-align:middle;font-family:Arial,sans-serif;font-size:14px;color:#333333">${conteudo}</td></tr>`;
+}
+
+function social(href, icone, alt) {
+  return `<a href="${href}" target="_blank" style="display:inline-block;margin:0 5px;text-decoration:none"><img src="${IMG}${icone}" alt="${alt}" width="20" height="20" style="display:block;border:0"></a>`;
+}
+
+function montar(d) {
+  const tel2 = d.tel2.trim() ? linhaContato('telefone.png', 'Telefone', esc(d.tel2)) : '';
+  return `<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:Arial,sans-serif;width:760px"><tr>`
+  // coluna esquerda: nome, cargo, contatos
+  + `<td style="vertical-align:top;padding:24px 24px 24px 24px;width:300px">`
+  +   `<div style="font-size:18px;font-weight:bold;color:#002366;padding-bottom:5px">${esc(d.nome)}</div>`
+  +   `<div style="font-size:14px;font-style:italic;color:#0033cc;padding-bottom:15px">${esc(d.cargo)}</div>`
+  +   `<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse">`
+  +     linhaContato('email.png', 'E-mail', `<a href="mailto:${esc(d.email)}" style="color:#0033cc">${esc(d.email)}</a>`)
+  +     linhaContato('telefone.png', 'Telefone', esc(d.tel1))
+  +     tel2
+  +   `</table>`
+  + `</td>`
+  // coluna direita: logo, selos, frase e faixa com redes
+  + `<td style="vertical-align:top;width:436px">`
+  +   `<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;width:436px"><tr>`
+  +     `<td style="padding:16px 12px 0 0;text-align:right;vertical-align:middle"><img src="${IMG}logo-aliger.png" alt="Aliger" width="200" height="72" style="display:inline-block;border:0"></td>`
+  +     `<td style="padding:12px 10px 0 0;width:40px;vertical-align:top">`
+  +       `<img src="${IMG}bcorp.png" alt="Certified B Corporation" width="36" height="60" style="display:block;border:0;margin:0 auto 8px auto">`
+  +       `<img src="${IMG}cubo-startup.png" alt="Startup Cubo Itaú" width="40" height="40" style="display:block;border:0">`
+  +     `</td>`
+  +   `</tr></table>`
+  +   `<div style="font-size:12px;color:#0033cc;text-align:right;padding:10px 10px 10px 0">Pesquisa e desenvolvimento para criar um mundo mais significativo</div>`
+  +   `<table cellpadding="0" cellspacing="0" border="0" bgcolor="#0a1fb0" style="border-collapse:separate;width:436px;background-color:#0a1fb0;background-image:linear-gradient(to right bottom,#0c27e7,#000518);border-radius:40px 0 0 0"><tr>`
+  +     `<td style="padding:10px;text-align:right">`
+  +       social('https://www.aliger.com.br/', 'site.png', 'Site')
+  +       social('https://www.linkedin.com/company/aligeriot', 'linkedin.png', 'LinkedIn')
+  +       social('https://www.instagram.com/aligeriot', 'instagram.png', 'Instagram')
+  +     `</td>`
+  +   `</tr></table>`
+  + `</td>`
+  + `</tr></table>`;
+}
+
+const form = document.getElementById('dados');
+const alvo = document.getElementById('assinatura');
+const status = document.getElementById('status');
+
+function atualizar() {
+  alvo.innerHTML = montar(Object.fromEntries(new FormData(form)));
+  status.textContent = '';
+}
+form.addEventListener('input', atualizar);
+atualizar();
+
+document.getElementById('copiar').addEventListener('click', async () => {
+  const html = alvo.innerHTML;
+  try {
+    await navigator.clipboard.write([new ClipboardItem({
+      'text/html': new Blob([html], { type: 'text/html' }),
+      'text/plain': new Blob([alvo.innerText], { type: 'text/plain' })
+    })]);
+  } catch (e) {
+    // navegador sem suporte a ClipboardItem: copia selecionando o conteúdo
+    const r = document.createRange(); r.selectNodeContents(alvo);
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    document.execCommand('copy'); s.removeAllRanges();
+  }
+  status.textContent = 'Copiada! Agora cole no Gmail.';
+});
+</script>
+</body>
+</html>
