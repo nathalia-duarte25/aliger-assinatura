@@ -22,14 +22,12 @@
 <body>
 <main>
   <h1>Assinatura de e-mail da Aliger</h1>
-  <p class="lead">Preencha seus dados, clique em <b>Copiar assinatura</b> e cole no Gmail.</p>
+  <p class="lead">Preencha nome, área e e-mail, clique em <b>Copiar assinatura</b> e cole no Gmail.</p>
 
   <form id="dados" autocomplete="off">
     <label>Nome <input name="nome" value="Nome Sobrenome"></label>
-    <label>Cargo <input name="cargo" value="Cargo"></label>
+    <label>Área <input name="area" value="Área"></label>
     <label>E-mail <input name="email" value="email@aliger.io"></label>
-    <label>Telefone 1 <input name="tel1" value="(12)3500-3600"></label>
-    <label>Telefone 2 (opcional) <input name="tel2" value="(11)4814-2600"></label>
   </form>
 
   <div class="preview" id="assinatura"></div>
@@ -47,6 +45,7 @@
 
 <script>
 const IMG = 'https://nathalia-duarte25.github.io/aliger-assinatura/img/';
+const TELEFONE = '(21) 3900-1600'; // Rio de Janeiro, igual para toda a equipe
 
 function esc(s) {
   return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -62,16 +61,14 @@ function social(href, icone, alt) {
 }
 
 function montar(d) {
-  const tel2 = d.tel2.trim() ? linhaContato('telefone.png', 'Telefone', esc(d.tel2)) : '';
   return `<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;font-family:Arial,sans-serif;width:760px"><tr>`
   // coluna esquerda: nome, cargo, contatos
   + `<td style="vertical-align:top;padding:24px 24px 24px 24px;width:300px">`
   +   `<div style="font-size:18px;font-weight:bold;color:#002366;padding-bottom:5px">${esc(d.nome)}</div>`
-  +   `<div style="font-size:14px;font-style:italic;color:#0033cc;padding-bottom:15px">${esc(d.cargo)}</div>`
+  +   `<div style="font-size:14px;font-style:italic;color:#0033cc;padding-bottom:15px">${esc(d.area)}</div>`
   +   `<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse">`
   +     linhaContato('email.png', 'E-mail', `<a href="mailto:${esc(d.email)}" style="color:#0033cc">${esc(d.email)}</a>`)
-  +     linhaContato('telefone.png', 'Telefone', esc(d.tel1))
-  +     tel2
+  +     linhaContato('telefone.png', 'Telefone', TELEFONE)
   +   `</table>`
   + `</td>`
   // coluna direita: logo, selos, frase e faixa com redes
